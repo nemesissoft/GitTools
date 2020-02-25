@@ -4,20 +4,19 @@
     .OUTPUTS
       Tuple containing short and long release description
     .EXAMPLE
-     $result = .\GetGithubReleaseNotes.ps1 -tagName "v1.0.38" -repoOwner "nemesissoft" -repoName "Nemesis.Essentials"
+     $result = .\GetGithubReleaseNotes.ps1 -tagName "v1.0.38" -repoName "nemesissoft/Nemesis.Essentials"
      $shortDesc = $result.Item1
      $longDesc = $result.Item2
 #>
 
 param (  
   [Parameter(Mandatory=$True)] [Alias("tn")] [string]$tagName,
-  [Parameter(Mandatory=$True)] [Alias("ro")] [string]$repoOwner,
   [Parameter(Mandatory=$True)] [Alias("rn")] [string]$repoName
 )
 
 try 
 {
-    $uri = "https://api.github.com/repos/" + $repoOwner + "/"+ $repoName + "/releases/tags/" + $tagName
+    $uri = "https://api.github.com/repos/" + $repoName + "/releases/tags/" + $tagName
     $webContent = Invoke-WebRequest -Uri $uri
 
     $json = $webContent.Content | ConvertFrom-Json  | Select name, body
